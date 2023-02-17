@@ -1,29 +1,29 @@
-pipeline {
-  agent any 
-  stages {
-    stage('Build') {
-      steps {
-          sh 'g++ -o PES2UG21CS803 PES2UG21CS803.cpp'
-          build job: 'PES2UG21CS803-1'
-      }
+pipeline{
+    agent any
+    stages{
+        stage('Build'){
+            steps{
+                sh 'g++ -c main/PES2UG21CS803.cpp'
+                sh 'g++ -o PES2UG21CS803 main/PES2UG21CS803.cpp'
+                echo 'build stage successfull'
+            }
+        }
+        stage('Test'){
+            steps{
+                sh './PES2UG21CS803'
+                echo 'test stage successful'
+            }
+        }
+        stage('Deploy'){
+            steps{
+          
+                echo 'Deployment Successful'
+            }
+        }
     }
-    
-    stage('Test') {
-      steps {
-        sh '../PES2UG21CS803'
-      }
+    post{
+        failure{
+            echo 'Pipeline Failed'
+        }
     }
-    
-    stage('Deploy') {
-      steps {
-          echo 'Success'
-      }
-    }
-  }
-  
-  post {
-    failure {
-      echo "Ohh no!!..Pipeline failed!!.."
-    }
-  }
 }
